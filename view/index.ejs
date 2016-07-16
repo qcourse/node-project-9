@@ -1,0 +1,29 @@
+<%- include('./header') %>
+
+<div class="container">
+    <form method="POST" enctype="multipart/form-data" action="/upload">
+        <div class="form-group">
+            <label for="pic_file">File input</label>
+            <input type="file" id="pic_file" name="pic_file">
+        </div>
+
+        <div class="form-group">
+            <label for="pic_name">图片名称</label>
+            <input type="text" class="form-control" id="pic_name" name="pic_name">
+        </div>
+
+        <div class="form-group">
+            <label for="pic_labels">标签</label>
+            <input type="text" class="form-control" id="pic_labels" name="pic_labels">
+        </div>
+
+        <div class="form-group">
+            <label for="pic_alt">alt文本</label>
+            <input type="text" class="form-control" id="pic_alt" name="pic_alt">
+        </div>
+
+        <button type="submit" class="btn btn-default">Submit</button>
+    </form>
+</div>
+
+<%- include('./footer') %>

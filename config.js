@@ -4,7 +4,8 @@ var config = {
   account: {
     alsotang: 'hehefuhehe',
     linktang: 'muerqiaohuiche',
-  }
+  },
+  api_backend: 'http://119.29.70.101:3000',
 }
 
 
