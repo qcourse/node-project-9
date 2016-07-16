@@ -22,6 +22,7 @@ app.get('/', function (req, res) {
 
 app.post('/upload', multer().single('pic_file'), function (req, res) {
   var uploadUrl = config.api_backend + '/upload'
+  var metaUrl = config.api_backend + '/meta'
 
   var picFile = req.file;
 
@@ -31,7 +32,7 @@ app.post('/upload', multer().single('pic_file'), function (req, res) {
       image: {
         value: picFile.buffer,
         options: {
-          filename: picFile.originalname,
+          filename: req.body.pic_name || picFile.originalname,
           contentType: picFile.mimetype
         }
       }
@@ -40,7 +41,25 @@ app.post('/upload', multer().single('pic_file'), function (req, res) {
     if (err) {
       return res.send(err)
     }
-    res.redirect('/')
+
+    var fileInfo = JSON.parse(response.body).fileInfo
+
+    request.post({
+      url: metaUrl,
+      body: {
+        id: fileInfo._id,
+        meta: {
+          labels: req.body.pic_labels.split(','),
+          alt: req.body.pic_alt,
+        }
+      },
+      json: true,
+    }, function (err, response) {
+      if (err) {
+        return res.send(err)
+      }
+      res.send(response.body)
+    })
   })
 
 
