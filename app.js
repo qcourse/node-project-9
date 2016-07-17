@@ -3,6 +3,8 @@ var express = require('express')
 var bodyParser = require('body-parser')
 var multer = require('multer');
 var request = require('request')
+var qsLib = require('qs')
+var _ = require('lodash')
 
 var authMiddleware = require('./middleware/auth')
 
@@ -17,7 +19,9 @@ app.use('/static', express.static('./static'))
 app.use(authMiddleware.userAuth)
 
 app.get('/', function (req, res) {
-  res.render('index')
+  res.render('index', {
+    tabname: 'upload'
+  })
 })
 
 app.post('/upload', multer().single('pic_file'), function (req, res) {
@@ -61,8 +65,37 @@ app.post('/upload', multer().single('pic_file'), function (req, res) {
       res.send(response.body)
     })
   })
+})
 
+app.get('/showlist', function (req, res) {
+  var listUrl = config.api_backend + '/list'
 
+  var search = req.query.search;
+
+  if (search) {
+    listUrl = `${listUrl}?${qsLib.stringify({search: search})}`
+  }
+
+  request(listUrl, function (err, response) {
+    var listInfo = JSON.parse(response.body);
+
+    var labels = listInfo.list.map(function (picInfo) {
+      var labels = picInfo.meta.labels;
+      if (!labels) {
+        return []
+      }
+      return labels;
+    })
+
+    labels = _.flatten(labels);
+    labels = _.uniq(labels)
+    
+    res.render('list', {
+      list: listInfo.list.reverse(),
+      labels: labels,
+      tabname: 'showlist'
+    })
+  })
 })
 
 app.listen(config.web_app_port, function () {

@@ -1,0 +1,25 @@
+<%- include('./header') %>
+
+<div class="container">
+    <div><p>共 <%= list.length %> 张</p></div>
+    <div>
+        查看标签：
+        <% labels.forEach(function (label) { %>
+            <a href="?search=<%= label %>"><%= label %></a>
+        <% })%>
+    </div>
+    <div class="row">
+        <% for (var i = 0; i < list.length; i++) {
+            var pic = list[i];
+        %>
+            <div class="col-xs-6 col-md-3">
+
+                <a href="#" class="thumbnail">
+                    <img src="<%- pic.url %>" alt="<%- pic.meta.alt %>">
+                </a>
+            </div>
+        <% } %>
+    </div>
+</div>
+
+<%- include('./footer') %>
