@@ -1,0 +1,19 @@
+<%- include('./header') %>
+
+<div class="container">
+    <div class="row">
+        <div class="col-xs-6">
+            <div class="thumbnail">
+                <img src="<%- picInfo.url %>" alt="<%= picInfo.meta.alt %>">
+                <div class="caption">
+                    <h3>名字：<%= picInfo.name %></h3>
+                    <p>alt文本：<%= picInfo.meta.alt %></p>
+                    <p>标签：<%= picInfo.meta.labels %></p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<%- include('./footer') %>

@@ -18,11 +18,18 @@ app.use(bodyParser.urlencoded({extended: true}))
 app.use('/static', express.static('./static'))
 app.use(authMiddleware.userAuth)
 
+
+app.use(function (req, res, next) {
+  res.locals.tabname = res.locals.tabname || '';
+  next()
+})
+
 app.get('/', function (req, res) {
   res.render('index', {
     tabname: 'upload'
   })
 })
+
 
 app.post('/upload', multer().single('pic_file'), function (req, res) {
   var uploadUrl = config.api_backend + '/upload'
@@ -94,6 +101,20 @@ app.get('/showlist', function (req, res) {
       list: listInfo.list.reverse(),
       labels: labels,
       tabname: 'showlist'
+    })
+  })
+})
+
+app.get('/showpic/:picid', function (req, res) {
+  var listUrl = config.api_backend + '/list'
+
+  request(listUrl, function (err, response) {
+    var listInfo = JSON.parse(response.body);
+
+    var picInfo = _.find(listInfo.list, {_id: req.params.picid})
+
+    res.render('pic_detail', {
+      picInfo: picInfo,
     })
   })
 })
