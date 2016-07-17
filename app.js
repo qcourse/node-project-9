@@ -123,9 +123,13 @@ app.get('/showpic/:picid', function (req, res) {
 
     var picUrl = config.my_main_page + req.originalUrl
 
+    var picUrlBase64 = yaqrcode(picInfo.url, {
+      size: 200
+    })
+
     res.render('pic_detail', {
       picInfo: picInfo,
-      picUrl: picUrl,
+      picUrlBase64: picUrlBase64,
     })
   })
 })
