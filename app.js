@@ -76,7 +76,7 @@ app.post('/upload', multer().single('pic_file'), function (req, res) {
       if (err) {
         return res.send(err)
       }
-      res.send(response.body)
+      res.redirect('/showlist')
     })
   })
 })
