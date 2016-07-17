@@ -15,4 +15,3 @@
 
 
 想要了解项目的完整构建过程，请参考[wiki](https://github.com/qcourse/node-project-9/wiki/)。
-    

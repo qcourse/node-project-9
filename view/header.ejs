@@ -23,6 +23,14 @@
                 <li class="<%= tabname == 'upload' && 'active' %>"><a href="/">上传</a></li>
                 <li class="<%= tabname == 'showlist' && 'active' %>"><a href="/showlist">图片列表</a></li>
                 <!--<li><a href="#contact">Contact</a></li>-->
+            </ul>
+
+            <form class="navbar-form navbar-right" action="/showlist">
+                <div class="form-group">
+                    <input type="text" placeholder="" class="form-control" name="search">
+                </div>
+                <button type="submit" class="btn btn-info">Search</button>
+            </form>
         </div><!--/.nav-collapse -->
     </div>
 </nav>
