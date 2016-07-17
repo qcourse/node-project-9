@@ -5,6 +5,9 @@ var multer = require('multer');
 var request = require('request')
 var qsLib = require('qs')
 var _ = require('lodash')
+var session = require('express-session')
+var flash = require('connect-flash');
+var yaqrcode = require('yaqrcode');
 
 var authMiddleware = require('./middleware/auth')
 
@@ -13,11 +16,15 @@ var app = express();
 app.set('views', './view')
 app.set('view engine', 'ejs');
 
-app.use(bodyParser.urlencoded({extended: true}))
 
 app.use('/static', express.static('./static'))
 app.use(authMiddleware.userAuth)
 
+app.use(bodyParser.urlencoded({extended: true}))
+app.use(session({
+  secret: 'project-9',
+}))
+app.use(flash());
 
 app.use(function (req, res, next) {
   res.locals.tabname = res.locals.tabname || '';
@@ -100,7 +107,8 @@ app.get('/showlist', function (req, res) {
     res.render('list', {
       list: listInfo.list.reverse(),
       labels: labels,
-      tabname: 'showlist'
+      tabname: 'showlist',
+      info: req.flash('info')
     })
   })
 })
@@ -113,9 +121,35 @@ app.get('/showpic/:picid', function (req, res) {
 
     var picInfo = _.find(listInfo.list, {_id: req.params.picid})
 
+    var picUrl = config.my_main_page + req.originalUrl
+
     res.render('pic_detail', {
       picInfo: picInfo,
+      picUrl: picUrl,
     })
+  })
+})
+
+
+app.post('/delpic', function (req, res) {
+  var picid = req.body.picid;
+
+  var delUrl = config.api_backend + '/delete'
+
+  request.post({
+    url: delUrl,
+    json: true,
+    body: {
+      id: picid
+    }
+  }, function (err, response) {
+    if (err) {
+      return res.send(err);
+    }
+
+    req.flash('info', '删除成功！')
+
+    res.redirect('/showlist')
   })
 })
 

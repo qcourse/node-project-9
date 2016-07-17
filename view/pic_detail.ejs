@@ -9,11 +9,31 @@
                     <h3>名字：<%= picInfo.name %></h3>
                     <p>alt文本：<%= picInfo.meta.alt %></p>
                     <p>标签：<%= picInfo.meta.labels %></p>
+                    <p>
+                        <form action="/delpic" method="POST" data-action="delpic">
+                            <input type="hidden" name="picid" value="<%- picInfo._id%>">
+                            <input type="submit" class="btn btn-danger" value="删除">
+                        </form>
+                    </p>
                 </div>
             </div>
+        </div>
+
+        <div class="col-xs-6">
+            <%- picUrl %>
         </div>
 
     </div>
 </div>
 
+<script>
+    $(function () {
+        $('[data-action="delpic"]').on('submit', function () {
+            return confirm('确认删除这张照片吗？')
+        })
+    })
+</script>
+
+
 <%- include('./footer') %>
+

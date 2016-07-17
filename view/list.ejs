@@ -1,6 +1,15 @@
 <%- include('./header') %>
 
 <div class="container">
+
+    <% if (info.length !== 0) {%>
+      <div class="alert alert-success" role="alert">
+          <% info.forEach(function (msg) { %>
+            <%= msg %>
+          <% }) %>
+      </div>
+    <% } %>
+
     <div class="row"><p>共 <%= list.length %> 张</p></div>
     <div class="row">
         <p>
@@ -16,7 +25,6 @@
             var pic = list[i];
         %>
             <div class="col-xs-6 col-md-3">
-
                 <a href="/showpic/<%- pic._id %>" class="thumbnail">
                     <img src="<%- pic.url %>" alt="<%- pic.meta.alt %>">
                 </a>
